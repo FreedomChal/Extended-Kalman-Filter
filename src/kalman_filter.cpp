@@ -88,9 +88,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   float ipt_phi = z[1];
   float ipt_rho_dot = z[2];
 
-  //if(ipt_rho < 0.0001 && ipt_rho > -0.0001) { // to prevent division by zero
-  //  ipt_rho = 0.0001;
-  //}
+  if(ipt_rho < 0.0001 && ipt_rho > -0.0001) { // to prevent division by zero
+    ipt_rho = 0.0001;
+  }
   
   isLess = ipt_phi < -pi;
   isGreater = ipt_phi > pi;
@@ -105,9 +105,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     isGreater = ipt_phi > pi;
   }
   
-  //if((phi - ipt_phi) > pi/2 || (phi - ipt_phi) < -pi/2) {
-  //  ipt_phi += pi;
-  //} // remove the issues caused with averaging values at the boundary of -pi and pi
+  if((phi - ipt_phi) > pi/2 || (phi - ipt_phi) < -pi/2) {
+    //if(phi > ipt_phi) {
+    //  phi = ipt_phi;
+    //} if(phi < ipt_phi) {
+    phi = ipt_phi;
+    //}
+  } // remove the issues caused with averaging values at the boundary of -pi and pi
 
   Eigen::VectorXd x_polar = VectorXd(3);
   Eigen::VectorXd z_corrected = VectorXd(3);
