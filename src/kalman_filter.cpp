@@ -76,12 +76,12 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   if(py < epsilon && py > -epsilon) { // to prevent division by zero
     py = epsilon;
   }
-  if(dx < epsilon && dx > -epsilon) { // to prevent division by zero
+  /*if(dx < epsilon && dx > -epsilon) { // to prevent division by zero
     dx = epsilon;
   }
   if(dy < epsilon && dy > -epsilon) { // to prevent division by zero
     dy = epsilon;
-  }
+  }*/
 
   float rho_dot = ((px * dx) + (py * dy)) / rho;
   
