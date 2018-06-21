@@ -1,2 +1,5 @@
 # Extended-Kalman-Filter
 Classwork for the Udacity Self Driving Car Nanodegree
+
+## General changes to the model's structure
+While working on the Project I ran into several problems. To deal with them, I made a couple changes to my model. First, I normalized phi to the range -pi to pi. As a result of this, at the boundary of -pi and pi, the Extended Kalman Filter would combine values near -pi and pi to form near-zero values, which resulted in the filter suddenly veering of to the side and not coming back. To deal with this, I made it so if the new phi and saved phi are more than 1/2pi apart, the saved phi will be set to the new phi. Making this change was extremely helpful, it appeared to have completely removed the boundary problem. Second, in several spots I added code that tests to see if certain variables are too close to zero, and if they are, set them to a small, non-zero number. I did this to prevent division by zero. I got some of the ideas for these changes from https://github.com/gardenermike/extended-kalman-filter.
