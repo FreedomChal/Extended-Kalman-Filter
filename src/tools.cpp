@@ -44,10 +44,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 }
 
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
-  /**
-  TODO:
-    * Calculate a Jacobian here.
-  */
+  // Calculate the Jacobian. I got most of this code from the Jacobian Matrix quiz solution.
   MatrixXd Hj(3,4);
   //recover state parameters
   float px = x_state(0);
@@ -55,12 +52,13 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float vx = x_state(2);
   float vy = x_state(3);
 
-  //check division by zero
+
+  // In the quiz solution, if the c1 value is too small the function will just reject the input and return an empty matrix, which is not the best. Here if the px or py value is too low, it will be set to a small non-zero number.
+  
   if(fabs(px) < 0.0001){
     px = 0.0001;
   }
 
-  //check division by zero
   if(fabs(py) < 0.0001){
     py = 0.0001;
   }
