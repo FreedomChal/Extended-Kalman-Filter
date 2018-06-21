@@ -27,19 +27,19 @@ void KalmanFilter::Predict() {
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
-	VectorXd z_pred = H_ * x_;
-	VectorXd y = z - z_pred;
-	MatrixXd Ht = H_.transpose();
-	MatrixXd S = H_ * P_ * Ht + R_;
-	MatrixXd Si = S.inverse();
-	MatrixXd PHt = P_ * Ht;
-	MatrixXd K = PHt * Si;
-
-	//new estimate
-	x_ = x_ + (K * y);
-	long x_size = x_.size();
-	MatrixXd I = MatrixXd::Identity(x_size, x_size);
-	P_ = (I - K * H_) * P_;
+  VectorXd z_pred = H_ * x_;
+  VectorXd y = z - z_pred;
+  MatrixXd Ht = H_.transpose();
+  MatrixXd S = H_ * P_ * Ht + R_;
+  MatrixXd Si = S.inverse();
+  MatrixXd PHt = P_ * Ht;
+  MatrixXd K = PHt * Si;
+ 
+  //new estimate
+  x_ = x_ + (K * y);
+  long x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -66,21 +66,22 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     isGreater = phi > pi;
   }
 
-  if(rho < 0.0001 && rho > -0.0001) { // to prevent division by zero
-    rho = 0.0001;
+  float epsilon = 1e-7;
+  if(rho < epsilon && rho > -epsilon) { // to prevent division by zero
+    rho = epsilon;
   }
-  //if(px < 0.0001 && px > -0.0001) { // to prevent division by zero
-  //  px = 0.0001;
-  //}
-  //if(py < 0.0001 && py > -0.0001) { // to prevent division by zero
-  //  py = 0.0001;
-  //}
-  //if(dx < 0.0001 && dx > -0.0001) { // to prevent division by zero
-  //  dx = 0.0001;
-  //}
-  //if(dy < 0.0001 && dy > -0.0001) { // to prevent division by zero
-  //  dy = 0.0001;
-  //}
+  if(px < epsilon && px > -epsilon) { // to prevent division by zero
+    px = epsilon;
+  }
+  if(py < epsilon && py > -epsilon) { // to prevent division by zero
+    py = epsilon;
+  }
+  if(dx < epsilon && dx > -epsilon) { // to prevent division by zero
+    dx = epsilon;
+  }
+  if(dy < epsilon && dy > -epsilon) { // to prevent division by zero
+    dy = epsilon;
+  }
 
   float rho_dot = ((px * dx) + (py * dy)) / rho;
   
